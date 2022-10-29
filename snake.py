@@ -1,3 +1,4 @@
+from locale import currency
 from pickle import TRUE
 import turtle as t
 import time 
@@ -22,7 +23,7 @@ head.color("green")
 head.goto(0,0)
 head.direction="stop"                     #direccio cap a on s'hauria de moure la serp al inici
 head.penup()
- 
+
 #snake's body
 cuerpo=[]
 
@@ -77,25 +78,39 @@ t.onkeypress(left, "Left")
 
 while True:
     t.update()
+    for cuerpo in cuerpo:
+        cuerpo.goto(x,y)
+        cuerpo.clear()
+
+    
     if head.distance(comida)<20:      #marca la distancia de "colision", el 20 son 20 pixeles (manzana y head son de 20x20 pix, asi q si estan a menos de 20 pix es q han colisionado) 
        x=random.randint(-280,280)     #coordenadas de spawn de la fruta en x
        y=random.randint(-280,280)
        comida.goto(x,y)
-      
-       t.mainloop
+    
+       nuevo_cuerpo=t.Turtle()
+       nuevo_cuerpo.speed(0)
+       nuevo_cuerpo.shape("triangle")
+       nuevo_cuerpo.color("green")
+       nuevo_cuerpo.penup()
+       cuerpo.append(nuevo_cuerpo)   #append/insert serveix per afegir un element a una llista 
+                                     #<lista>.insert(lo que vull afegir a la llista)
 
-       cuerpo=t.Turtle()
-       cuerpo.speed(0)
-       cuerpo.shape("triangle")
-       cuerpo.color("green")
-       cuerpo.penup()
-       cuerpo.append(cuerpo)
-       
+                                     
     #mover cuerpo serpiente
     totCuer=len(cuerpo)
-    
-    t.mainloop
+    for index in range (totCuer -1, 0, -1):
+        x=cuerpo[index -1].xcor()
+        y=cuerpo[index -1].ycor()
+        cuerpo[index].goto(x,y)
+    if totCuer>0:
+        x=head.xcor
+        y=head.ycor
+        cuerpo[0].goto(x,y)
+        
+    t.mainloop 
     mov()
     time.sleep(delay_time)
 
-    t.mainloop
+    
+
